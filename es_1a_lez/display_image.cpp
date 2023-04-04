@@ -24,7 +24,7 @@ int main( int argc, char** argv )
 
     Mat image;
 
-    image = imread( samples::findFile( imageName ), IMREAD_GRAYSCALE);
+    image = imread( samples::findFile( imageName ), IMREAD_COLOR);
 
     Mat padded = padding(image,1);
 
@@ -61,16 +61,29 @@ Mat padding(Mat image, int n){ //padding di una immagine aggiungendo 2*n righe e
     return padded;
 
 }
+
 Mat blur(Mat image){ //effettua un padding standard e sfoca l'immagine
 
     Mat blurred = padding(image,1);
 
-    if (image.type() == CV_8UC1)
+    if (image.type() == CV_8UC1) //se l'immagine è a 8 bit, e in scala di grigi
     for (int i=1; i<image.rows; i++)
         for(int j=1; j<image.cols; j++){//somma i 9 pixel di una zona e metti il valore medio all'interno della nuova Mat
             blurred.at<uchar>(i, j) = (image.at<uchar>(i, j) + image.at<uchar>(i-1, j-1) + image.at<uchar>(i-1, j) + image.at<uchar>(i-1, j+1) + image.at<uchar>(i, j-1) + image.at<uchar>(i, j+1) + image.at<uchar>(i+1, j-1) + image.at<uchar>(i+1, j) + image.at<uchar>(i+1, j+1))/9;
 
+    }
+
+    else if (image.type() == CV_8UC3){ //se l'immagine è a 8 bit, rgb
+
+    for (int i=1; i<image.rows; i++)
+        for(int j=1; j<image.cols; j++){//somma i 9 pixel di una zona e metti il valore medio all'interno della nuova Mat // per ogni pixel
+            blurred.at<Vec3b>(i, j)[0] = (image.at<Vec3b>(i, j)[0] + image.at<Vec3b>(i-1, j-1)[0] + image.at<Vec3b>(i-1, j)[0] + image.at<Vec3b>(i-1, j+1)[0] + image.at<Vec3b>(i, j-1)[0] + image.at<Vec3b>(i, j+1)[0] + image.at<Vec3b>(i+1, j-1)[0] + image.at<Vec3b>(i+1, j)[0] + image.at<Vec3b>(i+1, j+1)[0])/9;
+
+            blurred.at<Vec3b>(i, j)[1] = (image.at<Vec3b>(i, j)[1] + image.at<Vec3b>(i-1, j-1)[1] + image.at<Vec3b>(i-1, j)[1] + image.at<Vec3b>(i-1, j+1)[1] + image.at<Vec3b>(i, j-1)[1] + image.at<Vec3b>(i, j+1)[1] + image.at<Vec3b>(i+1, j-1)[1] + image.at<Vec3b>(i+1, j)[1] + image.at<Vec3b>(i+1, j+1)[1])/9;
+
+            blurred.at<Vec3b>(i, j)[2] = (image.at<Vec3b>(i, j)[2] + image.at<Vec3b>(i-1, j-1)[2] + image.at<Vec3b>(i-1, j)[2] + image.at<Vec3b>(i-1, j+1)[2] + image.at<Vec3b>(i, j-1)[2] + image.at<Vec3b>(i, j+1)[2] + image.at<Vec3b>(i+1, j-1)[2] + image.at<Vec3b>(i+1, j)[2] + image.at<Vec3b>(i+1, j+1)[2])/9;
         }
+    }
     else {
         cout << "Can't blur this img" << endl;
         exit(-1);
