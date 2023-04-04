@@ -61,7 +61,6 @@ Mat padding(Mat image, int n){ //padding di una immagine aggiungendo 2*n righe e
     return padded;
 
 }
-
 Mat blur(Mat image){ //effettua un padding standard e sfoca l'immagine
 
     Mat blurred = padding(image,1);
@@ -71,6 +70,10 @@ Mat blur(Mat image){ //effettua un padding standard e sfoca l'immagine
         for(int j=1; j<image.cols; j++){//somma i 9 pixel di una zona e metti il valore medio all'interno della nuova Mat
             blurred.at<uchar>(i, j) = (image.at<uchar>(i, j) + image.at<uchar>(i-1, j-1) + image.at<uchar>(i-1, j) + image.at<uchar>(i-1, j+1) + image.at<uchar>(i, j-1) + image.at<uchar>(i, j+1) + image.at<uchar>(i+1, j-1) + image.at<uchar>(i+1, j) + image.at<uchar>(i+1, j+1))/9;
 
+        }
+    else {
+        cout << "Can't blur this img" << endl;
+        exit(-1);
     }
 
     return blurred;
