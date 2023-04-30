@@ -58,8 +58,8 @@ Mat filter2d_fake (int type, Mat image1, Mat filter){
 
 
     if(type == 0){
-        for(int i=1; i<padded.rows-1; i++)
-            for (int j=1; j<padded.cols-1; j++){
+        for(int i=padding; i<padded.rows-1; i++)
+            for (int j=padding; j<padded.cols-1; j++){
                 float sum = 0;
                 for (int k=-padding; k<=padding; k++)
                     for (int m=-padding; m<=padding; m++){
@@ -75,8 +75,8 @@ Mat filter2d_fake (int type, Mat image1, Mat filter){
     else if (type == 1){
         Mat r_filter;
         rotate(filter,r_filter,ROTATE_180);
-        for(int i=1; i<padded.rows-1; i++)
-            for (int j=1; j<padded.cols-1; j++){
+        for(int i=padding; i<padded.rows-1; i++)
+            for (int j=padding; j<padded.cols-1; j++){
                 float sum = 0;
                 for (int k=-padding; k<=padding; k++)
                     for (int m=-padding; m<=padding; m++){
