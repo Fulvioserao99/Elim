@@ -36,13 +36,14 @@ int main( int argc, char** argv )
     Mat blurred;
 
 
-    GaussianBlur(image,blurred,Size(3,3),0);
+    //filter2D(image,blurred,CV_32F,getGaussianKernel(9,1));
 
-    Canny(blurred, blurred, 100, 240, 3);
+    Mat canny_orig;
+    Canny(image, canny_orig, 100, 240, 3);
     Mat modified;
     modified = canny(image,100,240);
     imshow("Canny mio",modified);
-    imshow("Canny vero",blurred);
+    imshow("Canny vero",canny_orig);
 
 
 
@@ -60,7 +61,8 @@ int main( int argc, char** argv )
 Mat canny (Mat image,int th1,int th2){
 
     Mat blurred;
-    GaussianBlur(image,blurred,Size(3,3),0,0);
+    //GaussianBlur(image,blurred,Size(3,3),0,0);
+    filter2D(image,blurred,CV_32F,getGaussianKernel(9,1));
     Mat Gx,Gy,Mag,Dir,NMS;
 
     Sobel(blurred,Gx,CV_32F,1,0);
@@ -84,7 +86,7 @@ Mat canny (Mat image,int th1,int th2){
 
         for (int j=0; j<NMS.cols; j++){
 
-            if((-22.5 < Dir.at<float>(i,j) < 22.5) || (-157.5 < Dir.at<float>(i,j) < 157.5)){
+            if((-22.5 < Dir.at<float>(i,j) &&  Dir.at<float>(i,j)<= 22.5) || (-157.5 < Dir.at<float>(i,j) && Dir.at<float>(i,j) <= 157.5)){
 
                 if(Mag.at<uchar>(i,j) < Mag.at<uchar>(i,j+1) || Mag.at<uchar>(i,j) < Mag.at<uchar>(i,j-1))
 
@@ -92,7 +94,7 @@ Mat canny (Mat image,int th1,int th2){
 
             }
 
-            else if ((-112.5 < Dir.at<float>(i,j) < -67.5) || (67.5 < Dir.at<float>(i,j) < 112.5)){
+            else if ((-112.5 < Dir.at<float>(i,j) && Dir.at<float>(i,j) <= -67.5) || (67.5 < Dir.at<float>(i,j) && Dir.at<float>(i,j) <= 112.5)){
 
                 if(Mag.at<uchar>(i,j) < Mag.at<uchar>(i+1,j) || Mag.at<uchar>(i,j) < Mag.at<uchar>(i-1,j))
 
@@ -101,7 +103,7 @@ Mat canny (Mat image,int th1,int th2){
 
             }
 
-            else if ((-67.5 < Dir.at<float>(i,j) < -22.5) || (112.5 < Dir.at<float>(i,j) < 157.5)){
+            else if ((-67.5 < Dir.at<float>(i,j) && Dir.at<float>(i,j) <= -22.5) || (112.5 < Dir.at<float>(i,j) && Dir.at<float>(i,j) <= 157.5)){
 
                 if(Mag.at<uchar>(i,j) < Mag.at<uchar>(i-1,j-1) || Mag.at<uchar>(i,j) < Mag.at<uchar>(i+1,j+1))
 
@@ -124,24 +126,25 @@ Mat canny (Mat image,int th1,int th2){
     }
 
 
+    Mat NMS_th2;
+
+    threshold(NMS,NMS_th2,th2,255,THRESH_TRUNC);
+
+    for(int i=0; i<NMS_th2.rows; i++){
+
+        for (int j=0; j<NMS_th2.cols; j++){
 
 
-    threshold(NMS,NMS,th2,255,THRESH_TRUNC);
-
-    for(int i=0; i<NMS.rows; i++){
-
-        for (int j=0; j<NMS.cols; j++){
-
-
-            if(NMS.at<uchar>(i,j) > th1){
+            if(NMS_th2.at<uchar>(i,j) > th1){
 
                 for(int k=-1; k<=1; k++){
 
                     for(int m=-1; m<=1; m++){
 
-                        if(NMS.at<uchar>(i+k,j+m) == 255){
+                        if(NMS_th2.at<uchar>(i+k,j+m) == 255){
 
-                            NMS.at<uchar>(i,j) = 255;
+                            NMS_th2.at<uchar>(i,j) = 255;
+
 
                         }
 
@@ -162,7 +165,7 @@ Mat canny (Mat image,int th1,int th2){
 
 
 
-    return NMS;
+    return NMS_th2;
 
 }
 
