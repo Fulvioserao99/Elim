@@ -90,7 +90,7 @@ void otsu (Mat image, int &th1, int &th2){
             for (int i=k+1; i<=l; i++)
                 P2+=histogram.at(i);
 
-            for (int i=l+1; i<MN; i++)
+            for (int i=l+1; i<256; i++)
                 P3+=histogram.at(i);
 
 

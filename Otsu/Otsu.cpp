@@ -79,8 +79,7 @@ int otsu (Mat image){
         for (int i=1; i<=k; i++)
             P1+=histogram.at(i);
 
-        for (int i=k+1; i<MN; i++)
-            P2+=histogram.at(i);
+        P2 = 1.0 - P1;
 
 
         float med_cum_A=0.0,med_cum_B=0.0;
