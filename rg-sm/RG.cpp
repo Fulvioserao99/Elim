@@ -39,11 +39,11 @@ int main(int argc, char **argv){
     for (int i=0; i<image.cols; ++i) {
         for (int j=0; j<image.rows; ++j) {
 
-            if (dest.at<uchar>(i,j) == 0){
+            if (dest.at<uchar>(Point(i,j)) == 0){
 
                 grow(image,mask,dest,Point(i,j),Threshold);
 
-                mask_area = (int)sum(mask).val[0];
+                mask_area = (int)cv::sum(mask).val[0];
                 if(mask_area > min_region_area){
 
                     dest += mask*padding;
@@ -91,6 +91,10 @@ void grow(Mat &image, Mat &mask, Mat &dest, Point seed, int th){
             for (int l=-1; l<=1; ++l){
 
                 Point possible = actual + Point(l,k);
+
+                if (possible == actual)
+
+                    continue;
 
                 if ((possible.x >= 0) && (possible.x < image.cols) && (possible.y >= 0) && (possible.y < image.rows)){
 
