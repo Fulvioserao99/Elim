@@ -30,7 +30,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    Mat outputmio;
+    Mat outputmio(image.size(), CV_8UC1);
 
     imshow("Immagine originale",image);
 
@@ -38,8 +38,26 @@ int main( int argc, char** argv )
     int th1,th2;
     otsu(image,th1,th2);
     cout << th1 << " " << th2 << endl;
-    threshold(image,outputmio,th1,255,THRESH_BINARY);
-    threshold(outputmio,outputmio,th2,255,THRESH_BINARY);
+
+
+
+    for (int i=0; i<image.rows; ++i){
+
+        for (int j=0; j<image.cols; ++j){
+
+            if (image.at<uchar>(i,j) >= th2)
+
+                outputmio.at<uchar>(i,j) = 255;
+
+           else if(image.at<uchar>(i,j) >= th1 && image.at<uchar>(i,j) < th2)
+
+                outputmio.at<uchar>(i,j) = 127;
+
+            else
+                outputmio.at<uchar>(i,j) = 0;
+
+        }
+    }
 
     imshow("Output", outputmio);
 
@@ -58,6 +76,8 @@ int main( int argc, char** argv )
 
 void otsu (Mat image, int &th1, int &th2){
 
+
+    GaussianBlur(image,image,Size(5,5),0);
     float sigma[256][256]={0.0};
     float sigma_max=0.0;
     int MN = image.rows*image.cols;
