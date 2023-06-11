@@ -41,7 +41,7 @@ double squaredSumDist(Scalar a, Scalar b){
                pow(a.val[1] - b.val[1],2)+
                pow(a.val[2] - b.val[2],2);
 
-    return distance;
+    return sqrt(distance);
 
 }
 
