@@ -22,7 +22,7 @@ void create_clusters(Mat image){
         rand_i = rand()%image.rows;
         rand_j = rand()%image.cols;
 
-        Scalar centroid = image.at<Vec3b>(rand_j,rand_i);
+        Scalar centroid = image.at<Vec3b>(rand_i,rand_j);
 
         centroids.push_back(centroid);
 
@@ -161,7 +161,7 @@ int main (int argc, char **argv){
     while(diff > threshold){
 
         for(int k=0; k<clusters_number; k++)
-            clusters[k].clear();
+            clusters.at(k).clear();
 
         new_center = 0;
 
