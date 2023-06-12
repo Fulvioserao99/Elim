@@ -118,13 +118,13 @@ void otsu (Mat image, int &th1, int &th2){
 
 
             for (int i=1; i<=k; i++)
-                med_cum_A+=histogram.at(i)*i;
+                med_cum_A+=(histogram.at(i)*i)/P1;
 
             for (int i=k+1; i<=l; i++)
-                med_cum_B+=histogram.at(i)*i;
+                med_cum_B+=(histogram.at(i)*i)/P2;
 
             for (int i=l+1; i<256; i++)
-                med_cum_C+=histogram.at(i)*i;
+                med_cum_C+=(histogram.at(i)*i)/P3;
 
             sigma[k][l] = P1*((med_cum_A-mG)*(med_cum_A-mG)) + P2*((med_cum_B-mG)*(med_cum_B-mG)) + P3*((med_cum_C-mG)*(med_cum_C-mG));
 
