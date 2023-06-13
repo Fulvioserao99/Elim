@@ -6,12 +6,9 @@ using namespace cv;
 using namespace std;
 
 Mat canny (Mat image,float th1,float th2);
-void cannyT(int,void*);
 
-Mat blurred;
 
-int th1=1;
-int th2=1;
+
 
 int main( int argc, char** argv )
 {
@@ -34,21 +31,17 @@ int main( int argc, char** argv )
     }
 
 
+    int th1=30;
 
     imshow("Original",image);
 
-    //Mat blurred;
-
-
-
-    //filter2D(image,blurred,CV_32F,getGaussianKernel(9,1));
-
+    Mat blurred;
     GaussianBlur(image,blurred,Size(5,5),0,0);
     Mat canny_orig;
     Canny(blurred, canny_orig, 60, 180, 3);
     Mat modified;
 
-    modified = canny(image,th1,th2);
+    modified = canny(image,th1,th1*2.4);
 
     imshow("Canny mio",modified);
 
