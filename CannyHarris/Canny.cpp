@@ -51,9 +51,7 @@ int main( int argc, char** argv )
     modified = canny(image,th1,th2);
 
     imshow("Canny mio",modified);
-    //createTrackbar("Min_t","Canny mio",&th1,200,cannyT);
-    //createTrackbar("Max_t","Canny mio",&th2,200,cannyT);
-    //cannyT(0,0);
+
     imshow("Canny vero",canny_orig);
 
 
@@ -66,30 +64,22 @@ int main( int argc, char** argv )
     return 0;
 }
 
-void cannyT(int,void*){
 
-    Mat mod;
-    mod = canny(blurred,th1,th2);
-
-    imshow("Canny mio",mod);
-
-}
 
 
 
 Mat canny (Mat image,float th1,float th2){
 
     Mat blurred;
-    //GaussianBlur(image,blurred,Size(5,5),0);
-    filter2D(image,blurred,CV_32FC1,getGaussianKernel(25,4));
+    filter2D(image,blurred,CV_32FC1,getGaussianKernel(9,1));
     Mat Gx,Gy,Mag,Dir,NMS;
     Mat Gx2,Gy2;
     Sobel(image,Gx,CV_32FC1,1,0);
     Sobel(image,Gy,CV_32FC1,0,1);
     pow(Gx,2,Gx2);
-    //normalize(Gx2,Gx2,0,255,NORM_MINMAX,CV_32F);
+
     pow(Gy,2,Gy2);
-    //normalize(Gy2,Gy2,0,255,NORM_MINMAX,CV_32F);
+
     Mag = Gx2+Gy2;
     sqrt(Mag,Mag); //Magnitudo
 
@@ -146,39 +136,6 @@ Mat canny (Mat image,float th1,float th2){
     }
 
 
-    /*Mat NMS_th2;
-
-    threshold(NMS,NMS_th2,th2,255,THRESH_TRUNC);
-
-    for(int i=0; i<NMS_th2.rows; i++){
-
-        for (int j=0; j<NMS_th2.cols; j++){
-
-
-            if(NMS_th2.at<uchar>(i,j) > th1){
-
-                for(int k=-1; k<=1; k++){
-
-                    for(int m=-1; m<=1; m++){
-
-                        if(NMS_th2.at<uchar>(i+k,j+m) == 255){
-
-                            NMS_th2.at<uchar>(i,j) = 255;
-                            continue;
-
-
-                        }
-
-
-                    }
-                }
-            }
-
-        }
-
-
-    }*/
-
     for(int i=0; i<NMS.rows; i++){
 
         for (int j=0; j<NMS.cols; j++){
@@ -222,14 +179,6 @@ Mat canny (Mat image,float th1,float th2){
         }
 
     }
-
-    //threshold(NMS_th2,NMS_th2,th1,255,THRESH_TOZERO);
-
-    //normalize(NMS,NMS,0,255,NORM_MINMAX,CV_8U);
-
-
-
-
 
 
 
