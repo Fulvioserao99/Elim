@@ -78,7 +78,7 @@ void find_cluster(Mat image){
 
 double calc_centroids(Mat image, double &new_center, double &old_center){
 
-    int blue=0,green=0,red=0;
+    double blue=0,green=0,red=0;
 
     double diff=0;
 
