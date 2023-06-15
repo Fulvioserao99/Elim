@@ -103,6 +103,7 @@ double calc_centroids(Mat image, double &new_center, double &old_center){
 
 
 
+        new_center+=squaredSumDist(Scalar(blue,green,red),centroids.at(i));
         centroids.at(i) = Scalar(blue,green,red);
 
 
