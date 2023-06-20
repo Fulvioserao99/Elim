@@ -19,8 +19,8 @@ void create_clusters(Mat image){
     int rand_i,rand_j;
     for (int i=0; i<clusters_number; ++i){
 
-        rand_i = rand()%image.rows;
-        rand_j = rand()%image.cols;
+        rand_i = rand()%image.rows-1;
+        rand_j = rand()%image.cols-1;
 
         Scalar centroid = image.at<Vec3b>(rand_i,rand_j);
 
@@ -78,12 +78,12 @@ void find_cluster(Mat image){
 
 double calc_centroids(Mat image, double &new_center, double &old_center){
 
-    double blue=0,green=0,red=0;
-
+    
     double diff=0;
 
     for(int i=0; i<clusters_number; ++i){
 
+        double blue=0,green=0,red=0;
 
 
         for (int j=0; j<clusters.at(i).size(); ++j){
